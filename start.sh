@@ -18,3 +18,7 @@ if [ ! -f "$CLIENT_ENV" ]; then
 else
     echo "$CLIENT_ENV exists."
 fi
+
+docker-compose up -d --build
+clear
+echo -e "App is running at http://localhost\n"
