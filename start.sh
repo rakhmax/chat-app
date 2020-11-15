@@ -4,6 +4,7 @@ CLIENT_ENV=./client/.env
 if [ ! -f "$SERVER_ENV" ]; then
     {
         echo "KOA_APP_PORT=8080"
+        echo "KOA_APP_MONGO_URI=mongodb+srv://admin:chatadmin123@cluster0.z8fp2.mongodb.net/Cluster0?retryWrites=true&w=majority"
     } > $SERVER_ENV
     echo "$SERVER_ENV has been generated. Fill it with correct credentials."
 else

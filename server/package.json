@@ -4,9 +4,9 @@
   "main": "src/app.js",
   "license": "MIT",
   "scripts": {
-    "start": "NODE_ENV=development nodemon --inspect=5858 -e ts,tsx --exec node -r ts-node/register -r dotenv/config ./src/app.ts dotenv_config_path=../server.env",
+    "start": "NODE_ENV=development nodemon --inspect=5858 -e ts,tsx --exec node -r ts-node/register -r dotenv/config ./src/app.ts",
     "build": "tsc --sourceMap false",
-    "serve": "NODE_ENV=production node -r dotenv/config ./build/app.js dotenv_config_path=../server.env",
+    "serve": "NODE_ENV=production node -r dotenv/config ./build/app.js",
     "lint": "eslint src/**/*"
   },
   "husky": {
@@ -19,6 +19,7 @@
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-router": "^7.4.1",
     "@types/koa__cors": "^3.0.2",
+    "@types/mongoose": "^5.10.0",
     "@types/validator": "^13.1.0",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
@@ -32,10 +33,9 @@
   },
   "dependencies": {
     "@koa/cors": "^3.0.0",
-    "@types/bcrypt": "^3.0.0",
-    "bcrypt": "^5.0.0",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
-    "koa-router": "^8.0.8"
+    "koa-router": "^8.0.8",
+    "mongoose": "^5.10.14"
   }
 }
