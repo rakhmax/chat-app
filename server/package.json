@@ -33,9 +33,11 @@
   },
   "dependencies": {
     "@koa/cors": "^3.0.0",
+    "@types/socket.io": "^2.1.11",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^8.0.8",
-    "mongoose": "^5.10.14"
+    "mongoose": "^5.10.14",
+    "socket.io": "^3.0.3"
   }
 }
