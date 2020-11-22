@@ -5,6 +5,8 @@
     "node": true
   },
   "parserOptions": {
+    "project": "./tsconfig.json",
+    "parser": "@typescript-eslint/parser",
     "sourceType": "module",
     "ecmaVersion": 2020,
     "ecmaFeatures": {
@@ -15,18 +17,10 @@
   "ignorePatterns": ["build", "node_modules"],
   "plugins": ["react"],
   "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended"
+    "airbnb-typescript",
+    "airbnb/hooks",
+    "plugin:@typescript-eslint/recommended"
   ],
-  "rules": {
-    "semi": ["error", "always"],
-    "curly": ["error", "multi"],
-    "quotes": ["error", "single"],
-    "indent": ["error", 2],
-    "no-trailing-spaces": "error",
-    "eol-last": ["error", "always"],
-    "react/prefer-stateless-function": "error"
-  },
   "settings": {
     "react": {
       "pragma": "React",
