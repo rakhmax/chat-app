@@ -21,6 +21,11 @@
     "airbnb/hooks",
     "plugin:@typescript-eslint/recommended"
   ],
+  "rules": {
+    "import/no-cycle": 0,
+    "react/prop-types": 0,
+    "react/jsx-props-no-spreading": 0
+  },
   "settings": {
     "react": {
       "pragma": "React",
