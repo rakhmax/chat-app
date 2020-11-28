@@ -1,32 +1,59 @@
-import React, { FC } from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog, { DialogProps } from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import React, { FC, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  DialogProps,
+} from '@material-ui/core';
 
-const DialogLogout: FC<DialogProps> = (props) => (
-  <Dialog
-    {...props}
-    aria-labelledby="alert-dialog-title"
-    aria-describedby="alert-dialog-description"
-  >
-    <DialogTitle id="alert-dialog-title">Вы уверены?</DialogTitle>
-    <DialogContent>
-      <DialogContentText id="alert-dialog-description">
-        Ваши сообщения будут стерты, а имя освобождено
-      </DialogContentText>
-    </DialogContent>
-    <DialogActions>
-      <Button color="default">
-        Отменить
-      </Button>
-      <Button color="secondary" autoFocus>
-        Ок
-      </Button>
-    </DialogActions>
-  </Dialog>
-);
+import { ButtonLoading } from '..';
+
+const DialogLogout: FC<DialogProps> = (props) => {
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
+
+  const handleLogout = () => {
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      history.replace('/');
+    }, 2500);
+  };
+
+  return (
+    <Dialog
+      {...props}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">Вы уверены?</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          Ваши сообщения будут стерты, а имя освобождено
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button color="default">
+          Отменить
+        </Button>
+        <ButtonLoading
+          autoFocus
+          color="secondary"
+          loading={loading}
+          disabled={loading}
+          onClick={handleLogout}
+          circularProgress={{ size: 24, color: 'secondary' }}
+        >
+          Ок
+        </ButtonLoading>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
 export default DialogLogout;

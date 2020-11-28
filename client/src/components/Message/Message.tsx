@@ -1,22 +1,12 @@
 import React, { FC } from 'react';
-import { makeStyles, Typography } from '@material-ui/core';
-import PropTypes from './IMessage';
+import { Typography } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  message: {
-    minWidth: 150,
-    maxWidth: '70%',
-    padding: theme.spacing(1.5),
-    backgroundColor: '#e0e0e0',
-    borderRadius: 10,
-  },
-  mine: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#bbdefb',
-  },
-}));
+import PropTypes from './propTypes';
+import useStyles from './styles';
 
-const Message: FC<PropTypes> = ({ text, isMine, username }) => {
+const Message: FC<PropTypes> = ({
+  text, image, isMine, username,
+}) => {
   const classes = useStyles();
 
   return (
@@ -35,11 +25,16 @@ const Message: FC<PropTypes> = ({ text, isMine, username }) => {
       >
         {username}
       </Typography>
-      <Typography
-        color="textPrimary"
-      >
+      <Typography color="textPrimary">
         {text}
       </Typography>
+      {image && (
+        <img
+          src={image.toString()}
+          alt="kek"
+          className={classes.image}
+        />
+      )}
     </Typography>
   );
 };

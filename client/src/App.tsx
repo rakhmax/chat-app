@@ -1,25 +1,23 @@
-import React, { FC, useState } from 'react';
-import { makeStyles } from '@material-ui/core';
-import { AppBar, MessageList, Drawer } from './components';
+import React, { FC } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
+import LoginPage from './pages/Login';
+import MessagesPage from './pages/Messages';
 
-const useStyles = makeStyles(() => ({
-  root: {
-    display: 'flex',
-  },
-}));
-
-const App: FC = () => {
-  const classes = useStyles();
-
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div className={classes.root}>
-      <AppBar drawerHandler={() => setOpen(!open)} />
-      <Drawer open={open} onClose={() => setOpen(false)} />
-      <MessageList />
-    </div>
-  );
-};
+const App: FC = () => (
+  <Router>
+    <Switch>
+      <Route exact path="/">
+        <LoginPage />
+      </Route>
+      <Route path="/messages">
+        <MessagesPage />
+      </Route>
+    </Switch>
+  </Router>
+);
 
 export default App;

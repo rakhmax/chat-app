@@ -1,4 +1,6 @@
 import AppBar from './AppBar/AppBar';
+import ButtonLoading from './ButtonLoading/ButtonLoading';
+import DialogCreateRoom from './DialogCreateRoom/DialogCreateRoom';
 import DialogLogout from './DialogLogout/DialogLogout';
 import Drawer from './Drawer/Drawer';
 import Message from './Message/Message';
@@ -9,6 +11,8 @@ import RoomListItem from './RoomListItem/RoomListItem';
 
 export {
   AppBar,
+  ButtonLoading,
+  DialogCreateRoom,
   DialogLogout,
   Drawer,
   Message,

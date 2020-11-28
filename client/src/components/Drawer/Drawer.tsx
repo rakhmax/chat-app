@@ -4,42 +4,21 @@ import {
   Button,
   Drawer,
   DrawerProps,
-  makeStyles,
   Toolbar,
-  useMediaQuery,
-  useTheme,
 } from '@material-ui/core';
-import { RoomList } from '..';
-import DialogLogout from '../DialogLogout/DialogLogout';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const drawerWidth = 400;
-
-const useStyles = makeStyles(() => ({
-  appBar: {
-    maxWidth: 400,
-    boxShadow: 'none',
-    top: 'auto',
-    bottom: 0,
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerContainer: {
-    overflow: 'auto',
-  },
-}));
+import useStyles from './styles';
+import { DialogCreateRoom, RoomList } from '..';
 
 const CustomDrawer: FC<DrawerProps> = (props) => {
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up('md'));
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
+  const handleOpen = () => {
     setOpen(true);
   };
 
@@ -68,16 +47,16 @@ const CustomDrawer: FC<DrawerProps> = (props) => {
           <Toolbar>
             <Button
               variant="outlined"
-              color="secondary"
+              color="primary"
               fullWidth
-              onClick={handleClickOpen}
+              onClick={handleOpen}
             >
-              Выйти
+              Создать комнату
             </Button>
           </Toolbar>
         </AppBar>
       </div>
-      <DialogLogout open={open} onClose={handleClose} />
+      <DialogCreateRoom open={open} onClose={handleClose} />
     </Drawer>
   );
 };

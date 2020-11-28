@@ -1,10 +1,14 @@
-import React, { FC } from 'react';
-import {
-  AppBar,
-  makeStyles,
-  Toolbar,
-} from '@material-ui/core';
+import React, {
+  FC,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { Toolbar, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
 import { Message, MessageBox } from '..';
+import MessageType from '../Message/propTypes';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -18,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
+    height: 'calc(100vh - 64px)',
     padding: theme.spacing(3),
   },
   textArea: {
@@ -27,40 +32,52 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const messages = [
-  { user: 'User1', text: '1' },
-  { user: 'User2', text: '2', isMine: true },
-  { user: 'User1', text: '3' },
-  { user: 'User1', text: '4' },
-  { user: 'User1', text: '5' },
-  { user: 'User1', text: '6', isMine: true },
-  { user: 'User1', text: '7', isMine: true },
-  { user: 'User1', text: '8' },
-  { user: 'User1', text: '9' },
-];
+const initialState: MessageType[] = [];
 
 const MessageList: FC = () => {
   const classes = useStyles();
+  const [messages, setMessages] = useState<MessageType[]>(initialState);
+  const messageListRef = useRef<HTMLElement>(null);
+
+  const scrollToBottom = () => {
+    if (messageListRef.current !== null) {
+      window.scrollTo(0, messageListRef.current.scrollHeight);
+    }
+  };
+
+  const sendMessage = (msg: MessageType) => {
+    setMessages((prev) => {
+      if (prev.length > 20) {
+        prev.shift();
+      }
+
+      return [
+        ...prev,
+        msg,
+      ];
+    });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
-    <main className={classes.content}>
+    <main className={classes.content} ref={messageListRef}>
       <Toolbar />
-      {messages.map((msg) => (
-        <Message
-          text={msg.text}
-          isMine={msg.isMine}
-          username={msg.user}
-        />
-      ))}
+      {messages.length
+        ? messages.map((msg) => (
+          <Message
+            image={msg.image}
+            text={msg.text}
+            isMine={msg.isMine}
+            username={msg.username}
+          />
+        )) : (
+          <Typography>Сообщений еще нет</Typography>
+        )}
       <Toolbar />
-      <AppBar
-        component="div"
-        position="fixed"
-        color="inherit"
-        className={classes.appBar}
-      >
-        <MessageBox />
-      </AppBar>
+      <MessageBox sendMessage={sendMessage} />
     </main>
   );
 };

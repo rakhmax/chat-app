@@ -1,29 +1,32 @@
-import React, { FC } from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import React, { FC, useState } from 'react';
 import {
   AppBar,
+  IconButton,
   Typography,
   Toolbar,
-  makeStyles,
-  useMediaQuery,
-  useTheme,
+  Button,
 } from '@material-ui/core';
-import PropTypes from './IAppBar';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { Menu as MenuIcon } from '@material-ui/icons';
 
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-}));
+import useStyles from './styles';
+import PropTypes from './propTypes';
+import { DialogLogout } from '..';
 
 const CustomAppBar: FC<PropTypes> = ({ drawerHandler }) => {
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up('md'));
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
@@ -39,10 +42,12 @@ const CustomAppBar: FC<PropTypes> = ({ drawerHandler }) => {
           <MenuIcon />
         </IconButton>
         )}
-        <Typography variant="h6" noWrap>
+        <Typography noWrap variant="h6" className={classes.title}>
           Realtime Chat App
         </Typography>
+        <Button color="inherit" onClick={handleOpen}>Выйти</Button>
       </Toolbar>
+      <DialogLogout open={open} onClose={handleClose} />
     </AppBar>
   );
 };
