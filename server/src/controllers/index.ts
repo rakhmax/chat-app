@@ -1,5 +1,7 @@
-import RootControllers from './RootControllers';
+import MessageController from './Message';
+import RoomController from './Room';
 
 export {
-    RootControllers
+    MessageController,
+    RoomController
 };
