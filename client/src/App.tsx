@@ -1,10 +1,13 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC, useCallback, useEffect, useState,
+} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from 'react-router-dom';
+
 import LoginPage from './pages/Login';
 import MessagesPage from './pages/Messages';
 import socket from './socket';
@@ -17,13 +20,13 @@ const App: FC = () => {
   const [user, setUser] = useState(getUser());
   const [room, setRoom] = useState(getCurrentRoom());
 
-  const onUnload = () => {
-    socket.emit('leave', 'sdsd');
-  };
+  const onUnload = useCallback(() => {
+    socket.emit('leave', { room });
+  }, [room]);
 
   useEffect(() => {
     window.addEventListener('beforeunload', onUnload);
-  }, []);
+  }, [onUnload]);
 
   useEffect(() => () => {
     window.removeEventListener('beforeunload', onUnload);
@@ -38,10 +41,10 @@ const App: FC = () => {
       <Router>
         <Switch>
           <Route exact path="/">
-            {user ? <Redirect to="/messages" /> : <LoginPage />}
+            {user.name ? <Redirect to="/messages" /> : <LoginPage />}
           </Route>
           <Route path="/messages">
-            {!user ? <Redirect to="/" /> : <MessagesPage />}
+            {!user.name ? <Redirect to="/" /> : <MessagesPage />}
           </Route>
         </Switch>
       </Router>

@@ -9,8 +9,8 @@ import {
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import useStyles from './styles';
 import { DialogCreateRoom, RoomList } from '..';
+import useStyles from './styles';
 
 const CustomDrawer: FC<DrawerProps> = (props) => {
   const theme = useTheme();

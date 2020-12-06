@@ -1,6 +1,11 @@
+import IStatus from './IStatus';
+
 export default interface IRoom {
-  id: string
   name: string
   owner: string
-  online?: number
+  online: number
+}
+
+export interface IRoomWithStatus extends IRoom {
+  msg: IStatus
 }

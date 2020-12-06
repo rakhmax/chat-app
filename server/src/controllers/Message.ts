@@ -2,6 +2,9 @@ import { Socket } from 'socket.io';
 
 import Message from '../models/Message';
 
+import IMessage from '../types/IMessage';
+import IRoom from '../types/IRoom';
+
 class MessageController {
     socket: Socket
 
@@ -12,7 +15,7 @@ class MessageController {
         this.getAll = this.getAll.bind(this);
     }
 
-    async save(data: any) {
+    async save(data: IMessage) {
         const { socket } = this;
 
         try {
@@ -28,10 +31,10 @@ class MessageController {
         }
     };
 
-    async getAll(data: any) {
+    async getAll(roomname: string) {
         const { socket } = this;
 
-        let messages = await Message.find({ room: data });
+        let messages = await Message.find({ room: roomname });
 
         messages = messages.map(message => {
             const mObj = message.toObject();

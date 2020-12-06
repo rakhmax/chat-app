@@ -1,13 +1,10 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import { Document, model, Schema } from 'mongoose';
 
-interface IMessage extends Document {
-  text: string
-  image: string
-  room: string
-  sender: string
-}
+import IMessage from '../types/IMessage';
 
-const MessageSchema: Schema<IMessage> = new Schema({
+interface IMessageModel extends IMessage, Document {}
+
+const MessageSchema: Schema = new Schema({
     text: String,
     image: String,
     room: {
@@ -22,4 +19,4 @@ const MessageSchema: Schema<IMessage> = new Schema({
 
 MessageSchema.set('toJSON', { virtuals: true });
 
-export default mongoose.model<IMessage>('Message', MessageSchema);
+export default model<IMessageModel>('Message', MessageSchema);

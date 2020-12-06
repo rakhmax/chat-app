@@ -17,20 +17,20 @@ import {
 
 import useStyles from './styles';
 import PropTypes from './propTypes';
-import IMessage from '../Message/propTypes';
 import socket from '../../socket';
 import getCurrentRoom from '../../helpers/getCurrentRoom';
 import AppContext from '../../context';
+import IMessage from '../../types/IMessage';
 
-const MessageBox: FC<PropTypes> = ({ sendMessage, user }) => {
-  const context = useContext(AppContext);
+const MessageBox: FC<PropTypes> = ({ sendMessage }) => {
+  const { user, currentRoom } = useContext(AppContext);
   const initialState = {
     text: '',
-    sender: user?.name,
-    room: getCurrentRoom()?.name,
+    sender: user.name,
+    room: currentRoom.name,
   };
   const classes = useStyles();
-  const [message, setMessage] = useState<any>(initialState);
+  const [message, setMessage] = useState<IMessage>(initialState);
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const MessageBox: FC<PropTypes> = ({ sendMessage, user }) => {
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
 
-    setMessage((prev: any) => ({
+    setMessage((prev) => ({
       ...prev,
       text,
     }));
@@ -58,7 +58,7 @@ const MessageBox: FC<PropTypes> = ({ sendMessage, user }) => {
       reader.readAsDataURL(files[0]);
 
       reader.addEventListener('load', () => {
-        setMessage((prev: any) => ({
+        setMessage((prev) => ({
           ...prev,
           image: reader.result || undefined,
         }));

@@ -18,6 +18,7 @@ import {
 import socket from '../../socket';
 import PropTypes from './propTypes';
 import AppContext from '../../context';
+import { IRoomWithStatus } from '../../types/IRoom';
 
 const DialogCreateRoom: FC<PropTypes> = ({ handleClose, ...props }) => {
   const { user } = useContext(AppContext);
@@ -30,7 +31,7 @@ const DialogCreateRoom: FC<PropTypes> = ({ handleClose, ...props }) => {
   };
 
   useEffect(() => {
-    socket.on('create', (data: any) => {
+    socket.on('create', (data: IRoomWithStatus) => {
       if (data.msg.type === 'error') {
         setError(data.msg.text);
       } else {

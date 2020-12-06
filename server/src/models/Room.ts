@@ -1,9 +1,8 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import { Document, model, Schema } from 'mongoose';
 
-interface IRoom extends Document {
-  name: string
-  owner: string
-}
+import IRoom from '../types/IRoom';
+
+interface IRoomModel extends IRoom, Document {}
 
 const RoomSchema: Schema = new Schema({
     name: {
@@ -19,4 +18,4 @@ const RoomSchema: Schema = new Schema({
 
 RoomSchema.set('toJSON', { virtuals: true });
 
-export default mongoose.model<IRoom>('Room', RoomSchema);
+export default model<IRoomModel>('Room', RoomSchema);

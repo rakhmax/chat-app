@@ -5,11 +5,7 @@ import PropTypes from './propTypes';
 import useStyles from './styles';
 import AppContext from '../../context';
 
-const Message: FC<PropTypes> = ({
-  text,
-  image,
-  sender,
-}) => {
+const Message: FC<PropTypes> = ({ text, image, sender }) => {
   const { user } = useContext(AppContext);
   const classes = useStyles();
 
@@ -19,7 +15,7 @@ const Message: FC<PropTypes> = ({
       component="div"
       className={classes.message}
       classes={{
-        paragraph: sender === user?.name ? classes.mine : undefined,
+        paragraph: sender === user.name ? classes.mine : undefined,
       }}
     >
       <Typography

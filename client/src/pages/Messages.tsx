@@ -1,7 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-
-import socket from '../socket';
 
 import {
   AppBar,
@@ -16,15 +14,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 const MessagesPage: FC = () => {
-  const [, setConnections] = useState([]);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    socket.on('connections', (data: any) => {
-      setConnections(data);
-    });
-  }, []);
 
   return (
     <div className={classes.root}>

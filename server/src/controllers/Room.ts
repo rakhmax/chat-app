@@ -2,7 +2,10 @@ import { Socket } from 'socket.io';
 
 import io from '../app';
 import MessageController from './Message';
+
+import Message from '../models/Message';
 import Room from '../models/Room';
+import IRoom, { IClientRoom } from '../types/IRoom';
 
 class RoomController {
     socket: Socket
@@ -17,8 +20,8 @@ class RoomController {
         this.getAll = this.getAll.bind(this);
     }
 
-    async create(data: any) {
-        const { name, owner } = data;
+    async create(data: IRoom) {
+        const { name } = data;
         const { socket } = this;
 
         if (socket.rooms.has(name)) {
@@ -30,22 +33,19 @@ class RoomController {
             });
             console.log('Exists', socket.rooms);
         } else {
-            const room = { name, owner };
-
-            socket.emit('create', {
-                room,
-                msg: {
-                    type: 'success',
-                    text: `Комната ${name} создана`
-                }
-            });
-
             try {
-                let newRoom = await Room.create(room);
+                let newRoom = await Room.create(data);
                 newRoom = newRoom.toJSON();
 
+                socket.emit('create', {
+                    room: data,
+                    msg: {
+                        type: 'success',
+                        text: `Комната ${name} создана`
+                    }
+                });
+
                 io.sockets.emit('rooms', {
-                    id: newRoom.id,
                     name: newRoom.name,
                     owner: newRoom.owner,
                     msg: {
@@ -69,13 +69,15 @@ class RoomController {
         }
     };
 
-    async remove(data: any) {
-        const { id, name } = data;
+    async remove(data: IRoom) {
+        const { name } = data;
         const { socket } = this;
 
         try {
-            let removedRoom = await Room.findByIdAndDelete(id).exec();
+            let removedRoom = await Room.findOneAndDelete({ name }).exec();
             removedRoom = removedRoom.toJSON();
+
+            await Message.deleteMany({ room: name }).exec();
 
             socket.to(removedRoom.name).emit('leave', {
                 msg: `Комната ${removedRoom.name} была удалена`
@@ -112,8 +114,11 @@ class RoomController {
         let arr = [];
 
         for (const room of rooms) {
-            const r = room.toJSON();
+            const r = room.toObject();
             const clientsInRoom = await io.in(r.name).sockets.allSockets();
+
+            delete r.__v;
+            delete r._id;
 
             arr.push({
                 ...r,
@@ -124,10 +129,10 @@ class RoomController {
         socket.emit('rooms', arr);
     }
 
-    async join(data: any) {
+    async join(data: IClientRoom) {
         const { socket } = this;
 
-        if (data.room) {
+        if (data.room && data.user) {
             const roomname = data.room.name;
 
             socket.rooms.clear();
@@ -135,7 +140,7 @@ class RoomController {
 
             const clientsInRoom = await io.in(roomname).sockets.allSockets();
 
-            if (data.room.owner === data.user)
+            if (data.room.owner === data.user.name)
                 socket.to(roomname).emit('join', data);
 
             const { getAll } = new MessageController(socket);
@@ -148,7 +153,7 @@ class RoomController {
         }
     }
 
-    async leave(data: any) {
+    async leave(data: IClientRoom) {
         const { socket } = this;
 
         if (data.room) {
@@ -157,8 +162,6 @@ class RoomController {
             socket.leave(roomname);
 
             const clientsInRoom = await io.in(roomname).sockets.allSockets();
-
-            socket.to(roomname).emit('leave', roomname);
 
             io.emit('change-online', {
                 name: roomname,
