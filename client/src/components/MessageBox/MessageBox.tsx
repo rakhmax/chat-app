@@ -1,8 +1,7 @@
 import React, {
-  KeyboardEvent,
   ChangeEvent,
-  MouseEvent,
   FC,
+  useContext,
   useEffect,
   useState,
 } from 'react';
@@ -11,20 +10,27 @@ import {
   IconButton,
   TextareaAutosize,
 } from '@material-ui/core';
-import { Send as IconSend, AttachFile as IconAttachFile } from '@material-ui/icons';
+import {
+  Send as IconSend,
+  AttachFile as IconAttachFile,
+} from '@material-ui/icons';
 
 import useStyles from './styles';
 import PropTypes from './propTypes';
 import IMessage from '../Message/propTypes';
+import socket from '../../socket';
+import getCurrentRoom from '../../helpers/getCurrentRoom';
+import AppContext from '../../context';
 
-const initialState = {
-  text: '',
-  username: 'user1',
-};
-
-const MessageBox: FC<PropTypes> = ({ sendMessage }) => {
+const MessageBox: FC<PropTypes> = ({ sendMessage, user }) => {
+  const context = useContext(AppContext);
+  const initialState = {
+    text: '',
+    sender: user?.name,
+    room: getCurrentRoom()?.name,
+  };
   const classes = useStyles();
-  const [message, setMessage] = useState<IMessage>(initialState);
+  const [message, setMessage] = useState<any>(initialState);
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
@@ -33,12 +39,12 @@ const MessageBox: FC<PropTypes> = ({ sendMessage }) => {
     } else {
       setDisabled(true);
     }
-  }, [message.text, message.image]);
+  }, [message]);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
 
-    setMessage((prev) => ({
+    setMessage((prev: any) => ({
       ...prev,
       text,
     }));
@@ -52,12 +58,14 @@ const MessageBox: FC<PropTypes> = ({ sendMessage }) => {
       reader.readAsDataURL(files[0]);
 
       reader.addEventListener('load', () => {
-        setMessage((prev) => ({
+        setMessage((prev: any) => ({
           ...prev,
           image: reader.result || undefined,
         }));
       });
     }
+
+    e.target.value = '';
   };
 
   const handleSendMessage = (e: any) => {
@@ -65,10 +73,13 @@ const MessageBox: FC<PropTypes> = ({ sendMessage }) => {
       e.preventDefault();
 
       if (message.text || message.image) {
-        sendMessage({
+        const msg = {
           ...message,
           text: message.text.trim(),
-        });
+          room: getCurrentRoom()?.name,
+        };
+        socket.emit('message', msg);
+        sendMessage(msg);
         setMessage(initialState);
       }
     }

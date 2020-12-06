@@ -2,6 +2,7 @@ import React, {
   ChangeEvent,
   FC,
   SyntheticEvent,
+  useContext,
   useState,
 } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -18,6 +19,7 @@ import {
 import { Autorenew } from '@material-ui/icons';
 
 import { ButtonLoading } from '../components';
+import AppContext from '../context';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -45,6 +47,7 @@ const LoginPage: FC = () => {
   const [nickname, setNickname] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { user } = useContext(AppContext);
 
   const generateNickname = () => {
     setNickname(`U_${Math.random().toString(36).substr(2, 5)}`);
@@ -56,6 +59,8 @@ const LoginPage: FC = () => {
     setLoading(true);
 
     setTimeout(() => {
+      sessionStorage.setItem('user', JSON.stringify({ name: nickname }));
+      user.set({ name: nickname });
       history.push('/messages');
       setLoading(false);
     }, 2500);

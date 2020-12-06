@@ -1,43 +1,26 @@
 import React, {
   FC,
+  useContext,
   useEffect,
   useRef,
   useState,
 } from 'react';
 import { Toolbar, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
 import { Message, MessageBox } from '..';
-import MessageType from '../Message/propTypes';
 
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    boxShadow: 'none',
-    borderTop: '1px solid rgba(0, 0, 0, 0.12)',
-    top: 'auto',
-    bottom: 0,
-    width: theme.breakpoints.up('md') ? 'calc(100% - 401px)' : '100%',
-  },
-  content: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    height: 'calc(100vh - 64px)',
-    padding: theme.spacing(3),
-  },
-  textArea: {
-    outline: 0,
-    border: 0,
-    padding: theme.spacing(1.5),
-  },
-}));
+import IMessage from '../../types/IMessage';
+import socket from '../../socket';
+import useStyles from './styles';
+import AppContext from '../../context';
 
-const initialState: MessageType[] = [];
+const initialState: IMessage[] = [];
 
 const MessageList: FC = () => {
   const classes = useStyles();
-  const [messages, setMessages] = useState<MessageType[]>(initialState);
+  const [messages, setMessages] = useState<IMessage[]>(initialState);
   const messageListRef = useRef<HTMLElement>(null);
+  const { user, currentRoom } = useContext(AppContext);
 
   const scrollToBottom = () => {
     if (messageListRef.current !== null) {
@@ -45,7 +28,7 @@ const MessageList: FC = () => {
     }
   };
 
-  const sendMessage = (msg: MessageType) => {
+  const sendMessage = (msg: IMessage) => {
     setMessages((prev) => {
       if (prev.length > 20) {
         prev.shift();
@@ -59,25 +42,44 @@ const MessageList: FC = () => {
   };
 
   useEffect(() => {
+    socket.on('messages', (data: any) => {
+      setMessages(data);
+    });
+    socket.on('message', (data: any) => {
+      setMessages((prev) => [
+        ...prev,
+        data,
+      ]);
+    });
+  }, []);
+
+  useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  return (
-    <main className={classes.content} ref={messageListRef}>
-      <Toolbar />
+  const renderNoRoom = () => <Typography>Выберите комнату</Typography>;
+
+  const renderMessages = () => (
+    <>
       {messages.length
         ? messages.map((msg) => (
           <Message
             image={msg.image}
             text={msg.text}
-            isMine={msg.isMine}
-            username={msg.username}
+            sender={msg.sender}
           />
         )) : (
           <Typography>Сообщений еще нет</Typography>
         )}
+      <Toolbar className={classes.toolbar} />
+      <MessageBox sendMessage={sendMessage} user={user} />
+    </>
+  );
+
+  return (
+    <main className={classes.content} ref={messageListRef}>
       <Toolbar />
-      <MessageBox sendMessage={sendMessage} />
+      {!currentRoom.id ? renderNoRoom() : renderMessages()}
     </main>
   );
 };

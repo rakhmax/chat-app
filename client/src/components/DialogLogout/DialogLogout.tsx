@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Button,
@@ -11,9 +11,12 @@ import {
 } from '@material-ui/core';
 
 import { ButtonLoading } from '..';
+import socket from '../../socket';
+import AppContext from '../../context';
 
 const DialogLogout: FC<DialogProps> = (props) => {
   const history = useHistory();
+  const { user } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
 
   const handleLogout = () => {
@@ -21,8 +24,11 @@ const DialogLogout: FC<DialogProps> = (props) => {
 
     setTimeout(() => {
       setLoading(false);
+      sessionStorage.clear();
+      user.set(null);
+      socket.emit('leave', 'sdsd');
       history.replace('/');
-    }, 2500);
+    }, 1000);
   };
 
   return (

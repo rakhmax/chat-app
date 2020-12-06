@@ -1,4 +1,7 @@
+import IRoom from '../../types/IRoom';
+
 export default interface IRoomListItem {
-  data: Record<string, string>
-  lastMsg: Record<string, string>
+  data: IRoom
+  current?: boolean
+  lastMsg?: Record<string, string>
 }

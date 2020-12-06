@@ -1,3 +1,3 @@
-export default interface PropTypes {
+export default interface IAppBar {
   drawerHandler: () => void
 }

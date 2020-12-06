@@ -1,6 +1,5 @@
-export default interface PropTypes {
-  text: string,
-  username: string,
-  image?: string | ArrayBuffer,
-  isMine?: boolean
+import IMessage from '../../types/IMessage';
+
+export default interface PropTypes extends IMessage {
+  sender: string,
 }

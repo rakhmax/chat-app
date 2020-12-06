@@ -1,21 +1,25 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { Typography } from '@material-ui/core';
 
 import PropTypes from './propTypes';
 import useStyles from './styles';
+import AppContext from '../../context';
 
 const Message: FC<PropTypes> = ({
-  text, image, isMine, username,
+  text,
+  image,
+  sender,
 }) => {
+  const { user } = useContext(AppContext);
   const classes = useStyles();
 
   return (
     <Typography
-      component="div"
       paragraph
+      component="div"
       className={classes.message}
       classes={{
-        paragraph: isMine ? classes.mine : undefined,
+        paragraph: sender === user?.name ? classes.mine : undefined,
       }}
     >
       <Typography
@@ -23,7 +27,7 @@ const Message: FC<PropTypes> = ({
         variant="body2"
         color="textPrimary"
       >
-        {username}
+        {sender}
       </Typography>
       <Typography color="textPrimary">
         {text}

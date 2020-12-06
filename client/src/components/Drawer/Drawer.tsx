@@ -16,14 +16,14 @@ const CustomDrawer: FC<DrawerProps> = (props) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('sm'));
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
 
   const handleOpen = () => {
-    setOpen(true);
+    setCreateOpen(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setCreateOpen(false);
   };
 
   return (
@@ -56,7 +56,7 @@ const CustomDrawer: FC<DrawerProps> = (props) => {
           </Toolbar>
         </AppBar>
       </div>
-      <DialogCreateRoom open={open} onClose={handleClose} />
+      <DialogCreateRoom open={createOpen} handleClose={handleClose} />
     </Drawer>
   );
 };
