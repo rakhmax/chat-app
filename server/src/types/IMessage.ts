@@ -3,4 +3,4 @@ export default interface IMessage {
   sender: string
   room?: string
   image?: string
-};;;;;;;;;;;;
+}

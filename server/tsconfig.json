@@ -5,7 +5,7 @@
       "experimentalDecorators": true,
       "module": "commonjs",
       "noImplicitAny": true,
-      "rootDirs": ["./src"],
+      "rootDir": "./src",
       "outDir": "./build",
       "sourceMap": true,
       "target": "ES2020",

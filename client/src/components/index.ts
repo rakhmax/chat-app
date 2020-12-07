@@ -8,6 +8,8 @@ import MessageBox from './MessageBox/MessageBox';
 import MessageList from './MessageList/MessageList';
 import RoomList from './RoomList/RoomList';
 import RoomListItem from './RoomListItem/RoomListItem';
+import UserList from './UserList/UserList';
+import UserListItem from './UserListItem/UserListItem';
 
 export {
   AppBar,
@@ -20,4 +22,6 @@ export {
   MessageList,
   RoomList,
   RoomListItem,
+  UserList,
+  UserListItem,
 };

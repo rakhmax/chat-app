@@ -4,22 +4,16 @@
     "node": true
   },
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": ["airbnb-typescript/base"],
   "ignorePatterns": ["build", "node_modules"],
   "rules": {
-    "semi": ["error", "always"],
-    "curly": ["error", "multi"],
-    "quotes": ["error", "single"],
-    "indent": ["error", 4],
-    "no-trailing-spaces": "error",
-    "sort-imports": [
-      "error",
-      {
-        "memberSyntaxSortOrder": ["single", "all", "multiple", "none"],
-        "ignoreCase": true,
-        "allowSeparatedGroups": true
-      }
-    ],
-    "eol-last": ["error", "always"]
+    "no-await-in-loop": 0,
+    "no-restricted-syntax": 0,
+    "no-underscore-dangle": 0,
+    "no-console": 0,
+    "import/no-cycle": 0
   }
 }
