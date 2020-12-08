@@ -3,8 +3,8 @@ CLIENT_ENV=./client/.env
 
 if [ ! -f "$SERVER_ENV" ]; then
     {
-        echo "KOA_APP_PORT=8080"
-        echo "KOA_APP_MONGO_URI=mongodb+srv://admin:chatadmin123@cluster0.z8fp2.mongodb.net/Cluster0?retryWrites=true&w=majority"
+        echo "APP_PORT=8080"
+        echo "APP_MONGO_URI=$1"
     } > $SERVER_ENV
     echo "$SERVER_ENV has been generated. Fill it with correct credentials."
 else
@@ -13,13 +13,17 @@ fi
 
 if [ ! -f "$CLIENT_ENV" ]; then
     {
-        echo "REACT_APP_API_URI=http://localhost:8080"
+        echo "REACT_APP_SOCKET_URI=ws://localhost:8080"
     } > $CLIENT_ENV
     echo "$CLIENT_ENV has been generated. Fill it with correct credentials."
 else
     echo "$CLIENT_ENV exists."
 fi
 
-docker-compose up -d --build
-clear
-echo -e "App is running at http://localhost\n"
+cd client
+yarn
+yarn build
+cd ../server
+yarn
+yarn build
+yarn serve

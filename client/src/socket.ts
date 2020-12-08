@@ -1,3 +1,5 @@
 import io from 'socket.io-client';
 
-export default io.connect('ws://localhost:8080');
+const URL: string = process.env.REACT_APP_SOCKET_URI || '';
+
+export default io.connect(URL);

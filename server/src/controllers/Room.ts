@@ -199,10 +199,14 @@ class RoomController {
   async getUsers(data: IRoom) {
     const { socket } = this;
 
-    let room = await Room.findOne({ name: data.name });
-    room = room.toObject();
+    try {
+      let room = await Room.findOne({ name: data.name });
+      room = room.toObject();
 
-    socket.emit('online', room.members);
+      socket.emit('online', room.members);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

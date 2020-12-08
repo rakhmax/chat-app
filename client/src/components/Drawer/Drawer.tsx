@@ -7,7 +7,6 @@ import {
   Toolbar,
   Tabs,
   Tab,
-  Box,
 } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -18,8 +17,8 @@ import UserList from '../UserList/UserList';
 
 interface TabPanelProps {
   children: React.ReactNode;
-  index: any;
-  value: any;
+  index: number;
+  value: number;
 }
 
 const TabPanel = (props: TabPanelProps) => {

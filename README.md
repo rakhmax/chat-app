@@ -1,22 +1,8 @@
-# reallab-opigi
-
-## Prerequirements
-
-Prepare application
-```bash
-$ ./prerequirements
-```
-
-## Development
-
-See [client instruction](client/README.md)
-
-See [server instruction](server/README.md)
+# test-chat-app
 
 ## Production
-Install [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/)
 
-Start application in docker containers
+The command installs all dependencies and starts the app
 ```bash
-$ docker-compose -f "docker-compose.yml" up -d --build
+$ ./start.sh [MONGO_URI]
 ```

@@ -68,6 +68,7 @@ const MessageBox: FC<PropTypes> = ({ sendMessage }) => {
     e.target.value = '';
   };
 
+  // I do not know what event type is rigth
   const handleSendMessage = (e: any) => {
     if (e.type === 'click' || e.code === 'Enter') {
       e.preventDefault();
